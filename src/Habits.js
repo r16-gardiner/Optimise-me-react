@@ -9,7 +9,7 @@ export default function DailyTimetable() {
 
 
   // Define your types and subjects (if needed)
-  const types = ["", "Work", "Exercise","Lottie Time", "Sleep" "Meal", "Commute", "Personal Care", "Lecture", "Cook", "Workshop","Lab","Shop", "Leisure"];
+  const types = ["", "Work", "Exercise","Lottie Time", "Sleep", "Meal", "Commute", "Personal Care", "Lecture", "Cook", "Workshop","Lab","Shop", "Leisure"];
   const subjects = ["","Chemistry", "Physics", "Other"]; // Add this if you plan to use subjects
 
   const getOutlineStyle = (subject) => {
