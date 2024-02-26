@@ -8,7 +8,7 @@ function HabitTracker() {
     useEffect(() => {
         const fetchHabits = async (startDate, endDate) => {
           try {
-            const response = await fetch(`https://optimise-me-tracker.azurewebsites.net/getHabits?startDate=${startDate}&endDate=${endDate}`);
+            const response = await fetch(`https://dailyplan-node.azurewebsites.net/getHabits?startDate=${startDate}&endDate=${endDate}`);
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
@@ -69,7 +69,7 @@ function HabitTracker() {
                     <tbody>
                         {habitsList.map(habitName => (
                             <tr key={habitName} className="hover:bg-gray-100">
-                                <td className="sticky left-0 z-10 px-2 py-1 text-xs whitespace-no-wrap border-b border-gray-300 bg-white">
+                                <td className="sticky left-0 z-10 px-2 py-1 text-xs whitespace-no-wrap bg-white border-b border-gray-300">
                                     {habitName}
                                 </td>
                                 {days.map(day => {
@@ -104,9 +104,9 @@ function HabitTracker() {
     return (
         <div className="container p-2 mx-auto sm:p-4">
         <div className="m-2 bg-white rounded-lg sm:m-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between p-2 sm:p-4">
+            <div className="flex flex-col items-center justify-between p-2 sm:flex-row sm:p-4">
             <Link to='/Habits'> 
-            <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-0 ">
+            <h2 className="mb-4 text-3xl sm:text-4xl sm:mb-0 ">
                     {formatMonthYear(currentDate)}
                 </h2>
                 </Link>

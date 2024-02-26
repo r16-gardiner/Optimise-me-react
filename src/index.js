@@ -6,6 +6,7 @@ import DailyTimetable from './DailyTimetable';
 import './index.css';
 import Pidat from './Monitor';
 import HabitTracker from './HabitsTracker';
+import ToDoList from './ToDo';
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
@@ -15,6 +16,7 @@ ReactDOM.render(
       <Route path='/plans' element={<DailyTimetable />} />
       <Route path='/Pi' element={<Pidat />} />
       <Route path='/Habits' element={<HabitTracker />} />
+      {/* <Route path='/todo' element={<ToDoList/>}/> */}
     </Routes>
   </BrowserRouter>,
   rootElement

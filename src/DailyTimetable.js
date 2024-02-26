@@ -121,7 +121,7 @@ export default function DailyTimetable() {
 
   const submitUpdatedTimetable = async () => {
     try {
-      const response = await fetch(`https://optimise-me-tracker.azurewebsites.net/update-daily-plan?date=${currentDate}`, {
+      const response = await fetch(`https://dailyplan-node.azurewebsites.net/update-daily-plan?date=${currentDate}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -162,8 +162,6 @@ export default function DailyTimetable() {
   return (
     <div className='flex justify-center h-screen'>
       <div key={currentDate} className="container">
-        {/* Sticky header */}
-
           <div className="sticky top-0 z-10 w-full bg-white border border-solid border-x-white">
           <Link to='/plans'>
             <h2 className="pt-5 pb-3 text-3xl text-center">{formatDate(currentDate)}</h2>

@@ -9,7 +9,7 @@ export default function Pidat() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://optimise-me-tracker.azurewebsites.net/timetable-summary`);
+                const response = await fetch(`https://dailyplan-node.azurewebsites.net/timetable-summary`);
                 if (response.ok) {
                     const data = await response.json();
                     setResponse(data); // Update the state with the response data
