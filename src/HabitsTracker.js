@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function HabitTracker() {
     const [habitsByDate, setHabitsByDate] = useState({});
@@ -51,41 +52,41 @@ function HabitTracker() {
 
         return (
             <div className="container p-2 mx-auto sm:p-4">
-                <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-                    <table className="w-full table-auto">
-                        <thead>
-                            <tr className="border border-gray-300 bg-gray-50">
-                                <th className="px-2 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase">
-                                    Habit
+            <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+                <table className="w-full table-auto">
+                    <thead>
+                        <tr className="border border-gray-300 bg-gray-50">
+                            <th className="sticky left-0 z-10 px-2 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-white">
+                                Habit
+                            </th>
+                            {days.map(day => (
+                                <th key={day} className="px-1 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase rounded-lg sm:px-2">
+                                    {day}
                                 </th>
-                                {days.map(day => (
-                                    <th key={day} className="px-1 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase rounded-lg sm:px-2">
-                                        {day}
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {habitsList.map(habitName => (
-                                <tr key={habitName} className="hover:bg-gray-100">
-                                    <td className="px-2 py-1 text-xs whitespace-no-wrap border-b border-gray-300">
-                                        {habitName}
-                                    </td>
-                                    {days.map(day => {
-                                        const date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                                        const dayHabits = habitsByDate[date] || [];
-                                        const habit = dayHabits.find(h => h.name === habitName);
-                                        const completed = habit ? habit.completed : false;
-                                        return (
-                                            <td key={day} className={`px-1 py-1 whitespace-no-wrap border-b border-gray-300 text-xs ${completed ? 'bg-green-200' : 'bg-red-200'} sm:px-2`}></td>
-                                        );
-                                    })}
-                                </tr>
                             ))}
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {habitsList.map(habitName => (
+                            <tr key={habitName} className="hover:bg-gray-100">
+                                <td className="sticky left-0 z-10 px-2 py-1 text-xs whitespace-no-wrap border-b border-gray-300 bg-white">
+                                    {habitName}
+                                </td>
+                                {days.map(day => {
+                                    const date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                                    const dayHabits = habitsByDate[date] || [];
+                                    const habit = dayHabits.find(h => h.name === habitName);
+                                    const completed = habit ? habit.completed : false;
+                                    return (
+                                        <td key={day} className={`px-1 py-1 whitespace-no-wrap border-b border-gray-300 text-xs ${completed ? 'bg-green-200' : 'bg-red-200'} sm:px-2`}></td>
+                                    );
+                                })}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
+        </div>
         );
     };
 
@@ -104,9 +105,11 @@ function HabitTracker() {
         <div className="container p-2 mx-auto sm:p-4">
         <div className="m-2 bg-white rounded-lg sm:m-4">
             <div className="flex flex-col sm:flex-row items-center justify-between p-2 sm:p-4">
-                <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-0 ">
+            <Link to='/Habits'> 
+            <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-0 ">
                     {formatMonthYear(currentDate)}
                 </h2>
+                </Link>
                 <div className="flex flex-row justify-between w-full sm:w-auto">
                     <button 
                         onClick={() => changeMonth(-1)} 
