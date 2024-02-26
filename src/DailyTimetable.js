@@ -53,7 +53,7 @@ export default function DailyTimetable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://optimise-me-tracker.azurewebsites.net/daily-plan?date=${currentDate}`);
+        const response = await fetch(`https://dailyplan-node.azurewebsites.net/daily-plan?date=${currentDate}`);
         if (response.ok) {
           const data = await response.json();
           // Check if the data is in the expected format
