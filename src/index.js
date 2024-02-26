@@ -2,7 +2,7 @@ import reportWebVitals from './reportWebVitals';
 import React from 'react';
 import ReactDOM from 'react-dom'; // Correct import
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Correct import
-import DailyTimetable from './Habits';
+import DailyTimetable from './DailyTimetable';
 import './index.css';
 import Pidat from './Monitor';
 import HabitTracker from './HabitsTracker';

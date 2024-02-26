@@ -163,9 +163,11 @@ export default function DailyTimetable() {
     <div className='flex justify-center h-screen'>
       <div key={currentDate} className="container">
         {/* Sticky header */}
-        <Link to='/plans'>
+
           <div className="sticky top-0 z-10 w-full bg-white border border-solid border-x-white">
+          <Link to='/plans'>
             <h2 className="pt-5 pb-3 text-3xl text-center">{formatDate(currentDate)}</h2>
+            </Link>
             <div className="flex justify-center pb-5 mb-4 space-x-2">
               <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700" onClick={handlePreviousDay}>
                 Previous Day
@@ -175,7 +177,6 @@ export default function DailyTimetable() {
               </button>
             </div>
           </div>
-        </Link>
     
   
         <div className="pt-2">

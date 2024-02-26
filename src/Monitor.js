@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PieChart from './Pie';
-import DailyTimetable from './Habits';
+import DailyTimetable from './DailyTimetable';
 import HabitTracker from './HabitsTracker';
 
 export default function Pidat() {
