@@ -50,46 +50,43 @@ function HabitTracker() {
         const habitsList = Array.from(allHabits);
 
         return (
-            <div className="container p-4 mx-auto">
-            <div className="overflow-x-auto bg-white rounded-lg shadow-lg"> {/* Card-like container */}
-                <table className="w-full table-auto"> {/* Adjusted width and set to auto */}
-                    <thead>
-                        <tr className="border border-gray-300 bg-gray-50"> {/* Added background color */}
-                            <th className="px-2 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase">
-                                Habit
-                            </th>
-                            {days.map(day => (
-                                <th key={day} className="px-2 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase rounded-lg">
-                                    {day}
+            <div className="container p-2 mx-auto sm:p-4">
+                <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+                    <table className="w-full table-auto">
+                        <thead>
+                            <tr className="border border-gray-300 bg-gray-50">
+                                <th className="px-2 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase">
+                                    Habit
                                 </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {habitsList.map(habitName => (
-                            <tr key={habitName} className="hover:bg-gray-100">
-                                <td className="px-2 py-1 text-xs whitespace-no-wrap border-b border-gray-300">
-                                    {habitName}
-                                </td>
-                                {days.map(day => {
-                                    const date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                                    const dayHabits = habitsByDate[date] || [];
-                                    const habit = dayHabits.find(h => h.name === habitName);
-                                    const completed = habit ? habit.completed : false;
-                                    return (
-                                        <td key={day} className={`px-2 py-1 whitespace-no-wrap border-b border-gray-300 text-xs ${
-                                        completed ? 'bg-green-200' : 'bg-red-200'
-                                        }`}></td>
-                                    );
-                                })}
+                                {days.map(day => (
+                                    <th key={day} className="px-1 py-1 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase rounded-lg sm:px-2">
+                                        {day}
+                                    </th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {habitsList.map(habitName => (
+                                <tr key={habitName} className="hover:bg-gray-100">
+                                    <td className="px-2 py-1 text-xs whitespace-no-wrap border-b border-gray-300">
+                                        {habitName}
+                                    </td>
+                                    {days.map(day => {
+                                        const date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                                        const dayHabits = habitsByDate[date] || [];
+                                        const habit = dayHabits.find(h => h.name === habitName);
+                                        const completed = habit ? habit.completed : false;
+                                        return (
+                                            <td key={day} className={`px-1 py-1 whitespace-no-wrap border-b border-gray-300 text-xs ${completed ? 'bg-green-200' : 'bg-red-200'} sm:px-2`}></td>
+                                        );
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        
-        );  
+        );
     };
 
     const formatMonthYear = (date) => {
@@ -104,32 +101,34 @@ function HabitTracker() {
     };
 
     return (
-        <div className="container p-4 mx-auto">
-            <div className="m-4 bg-white rounded-lg ">
-                <div className="flex items-center justify-between p-4">
+        <div className="container p-2 mx-auto sm:p-4">
+        <div className="m-2 bg-white rounded-lg sm:m-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between p-2 sm:p-4">
+                <h2 className="text-3xl sm:text-4xl mb-4 sm:mb-0 ">
+                    {formatMonthYear(currentDate)}
+                </h2>
+                <div className="flex flex-row justify-between w-full sm:w-auto">
                     <button 
                         onClick={() => changeMonth(-1)} 
-                        className="flex items-center px-4 py-2 font-bold text-white bg-blue-500 rounded-3xl hover:bg-blue-700"
+                        className="flex items-center px-2 py-1 font-bold text-white bg-blue-500 rounded-3xl hover:bg-blue-700 sm:px-4 sm:py-2"
                     >
                         <span className="mr-2">←</span>
                         {formatMonth(currentDate, -1)}
                     </button>
                     
-                    <h2 className="text-3xl ">
-                        {formatMonthYear(currentDate)}
-                    </h2>
-                    
                     <button 
                         onClick={() => changeMonth(1)} 
-                        className="flex items-center px-4 py-2 font-bold text-white bg-green-500 rounded-3xl hover:bg-green-700"
+                        className="flex items-center px-2 py-1 font-bold text-white bg-green-500 rounded-3xl hover:bg-green-700 sm:px-4 sm:py-2"
                     >
                         {formatMonth(currentDate, 1)}
                         <span className="ml-2">→</span>
                     </button>
                 </div>
-                {generateCalendar()}
             </div>
+            {generateCalendar()}
         </div>
+    </div>
+    
     );
 }
 
