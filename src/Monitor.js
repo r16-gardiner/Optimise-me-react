@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PieChart from './Pie';
 import DailyTimetable from './DailyTimetable';
 import HabitTracker from './HabitsTracker';
+import ToDoList from './ToDo';
 
 export default function Pidat() {
     const [response, setResponse] = useState(null);
@@ -67,7 +68,7 @@ export default function Pidat() {
           <div className="w-full p-2 md:w-1/2 lg:w-2/3">
             {/* Placeholder for further analysis components */}
             <div className="h-full p-4 bg-white rounded-xl">
-              <p className="text-lg">Further Analysis...</p>
+            <ToDoList/>
             </div>
           </div>
         </div>

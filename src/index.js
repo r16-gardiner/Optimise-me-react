@@ -16,7 +16,7 @@ ReactDOM.render(
       <Route path='/plans' element={<DailyTimetable />} />
       <Route path='/Pi' element={<Pidat />} />
       <Route path='/Habits' element={<HabitTracker />} />
-      {/* <Route path='/todo' element={<ToDoList/>}/> */}
+      <Route path='/todo' element={<ToDoList/>}/>
     </Routes>
   </BrowserRouter>,
   rootElement

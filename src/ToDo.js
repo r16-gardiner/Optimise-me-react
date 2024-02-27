@@ -1,112 +1,154 @@
-// src/ToDoList.js
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ToDoList() {
-    const [newTask, setNewTask] = useState('');
-    const [toDoItems, setToDoItems] = useState([]);
+    const [todos, setTodos] = useState([]);
+    const [inputValue, setInputValue] = useState('');
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
-
-    async function fetchToDoItems(date) {
-        try {
-            const response = await fetch(`http://localhost:8888/getToDoData?startDate=${date}&endDate=${date}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json(); // Correctly parse the JSON response
-    
-            // Adjusted to correctly navigate through the nested structure
-            const fetchedToDoItems = data.length > 0 ? data[0].dailyToDoItems.dailyToDoItems : [];
-            
-            if (Array.isArray(fetchedToDoItems)) {
-                setToDoItems(fetchedToDoItems);
-            } else {
-                console.warn("Expected dailyToDoItems to be an array, received:", fetchedToDoItems);
-                setToDoItems([]); // Default to an empty array if the expected structure is not found
-            }
-        } catch (error) {
-            console.error("Error fetching to-do items:", error);
-        }
-    };
-    
-
+  
     useEffect(() => {
-        fetchToDoItems(currentDate);
+        fetchTodos();
     }, [currentDate]);
-    
-    const addTask = () => {
-        if (!newTask.trim()) return;
-        setToDoItems([...toDoItems, { name: newTask, completed: false }]);
-        setNewTask('');
-    };
-
-    const updateToDoItem = (index) => {
-        const updatedItems = toDoItems.map((item, idx) => 
-            idx === index ? { ...item, completed: !item.completed } : item
-        );
-        setToDoItems(updatedItems);
-    };
-
-    const submitToDoItems = async () => {
+  
+    async function fetchTodos() {
         try {
-            // Assuming there's an endpoint to handle POST for a new day or PUT to update existing day
-            const method = toDoItems.length > 0 ? 'PUT' : 'POST';
-            const url = `http://localhost:8888/${method === 'PUT' ? 'updateToDoData' : 'logToDoData'}`;
-            const response = await fetch(url, {
-                method: method,
+            const response = await fetch(`https://dailyplan-node.azurewebsites.net/todo?date=${currentDate}`);
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const data = await response.json();
+            const todos = data[0] ? data[0].dailyToDoItems : [];
+            setTodos(todos);
+            console.log(data[0].dailyToDoItems)
+        } catch (error) {
+            console.error('Failed to fetch todos:', error);
+        }
+    }
+  
+    async function addTask() {
+        const newTask = { title: inputValue, completed: false };
+        const newss = [...todos, newTask]
+        setTodos(newss)
+        try {
+            await updateTodos([...todos, newTask]);
+            setInputValue(''); // Reset input value after adding
+        } catch (error) {
+            console.error('Failed to add todo:', error);
+        }
+    }
+  
+    async function toggleTodo(index) {
+        
+        const updatedTodos = todos.map((todo, idx) =>
+            idx === index ? { ...todo, completed: !todo.completed } : todo
+        );
+        setTodos(updatedTodos)
+        try {
+            await updateTodos(updatedTodos);
+        } catch (error) {
+            console.error('Failed to toggle todo:', error);
+        }
+    }
+  
+    async function updateTodos(updatedTodos) {
+        try {
+            const response = await fetch('https://dailyplan-node.azurewebsites.net/todo', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     date: currentDate,
-                    dailyToDoItems: toDoItems,
+                    dailyToDoItems: updatedTodos
                 }),
-            
             });
-            console.log(response)
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            alert('To-Do list updated successfully!');
+            if (!response.ok) throw new Error('Network response was not ok.');
+            fetchTodos(); // Refresh the list
         } catch (error) {
-            console.error("Error submitting to-do items:", error);
+            console.error('Failed to update todos:', error);
         }
-    };
-
-    const handlePreviousDay = () => {
-        const previousDay = new Date(currentDate);
-        previousDay.setDate(previousDay.getDate() - 1);
-        setCurrentDate(previousDay.toISOString().split('T')[0]);
-    };
-
-    const handleNextDay = () => {
-        const nextDay = new Date(currentDate);
-        nextDay.setDate(nextDay.getDate() + 1);
-        setCurrentDate(nextDay.toISOString().split('T')[0]);
-    };
+    }
+    async function deleteTask(index) {
+        console.log(`Deleting task at index: ${index}`); // Debug: log the index to be deleted
+        const updatedTodos = todos.filter((_, idx) => {
+            console.log(`Filtering index: ${idx}`); // Debug: log the current index being checked
+            return idx !== index;
+        });
+        setTodos(updatedTodos);
+        console.log(updatedTodos); // Debug: log the updated list to see if the item was removed
+        try {
+            await updateTodos(updatedTodos); // Update the backend
+        } catch (error) {
+            console.error('Failed to delete todo:', error);
+        }
+    }
+    
+    
     const handleDayChange = (days) => {
         const newDate = new Date(currentDate);
         newDate.setDate(newDate.getDate() + days);
         setCurrentDate(newDate.toISOString().split('T')[0]);
     };
+// Function to format date
+const formatDate = (date) => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    return (
-        <div>
-        <button onClick={() => handleDayChange(-1)}>Previous Day</button>
-        <button onClick={() => handleDayChange(1)}>Next Day</button>
-        <h3>To-Do List for {currentDate}</h3>
-        <div>
-            <input type="text" value={newTask} onChange={(e) => setNewTask(e.target.value)} placeholder="Add new task" />
-            <button onClick={addTask}>Add Task</button>
-        </div>
-        <ul>
-            {toDoItems.map((item, index) => (
-                <li key={index}>
-                    <input type="checkbox" checked={item.completed} onChange={() => updateToDoItem(index)} />
-                    {item.name}
-                </li>
-            ))}
-        </ul>
-        <button onClick={submitToDoItems}>Submit To-Do List</button>
+    const dateObj = new Date(date);
+    if (date === today.toISOString().split('T')[0]) {
+        return 'Today';
+    } else if (date === yesterday.toISOString().split('T')[0]) {
+        return 'Yesterday';
+    } else if (date === tomorrow.toISOString().split('T')[0]) {
+        return 'Tomorrow';
+    } else {
+        // Format the date as "Month day, year" (e.g., "January 1, 2024")
+        return dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+};
+
+return (
+<div className="max-w-md p-6 mx-auto bg-white rounded-lg shadow-lg">
+    <div className="flex justify-between mb-4">
+        <button onClick={() => handleDayChange(-1)} className="px-6 py-3 text-black bg-gray-200 rounded-lg">Previous Day</button>
+        <button onClick={() => handleDayChange(1)} className="px-6 py-3 text-black bg-gray-200 rounded-lg">Next Day</button>
     </div>
-);
+
+    <Link to='/todo'>
+    <h3 className="mb-4 text-xl text-center">To-Do List for {formatDate(currentDate)}</h3>
+    </Link>
+   
+    <div className="mb-4">
+        <input
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Add new task"
+            className="w-full p-4 border-gray-300 rounded-lg"
+        />
+
+        <div className="flex justify-center mt-2">
+            <button onClick={addTask} className="px-6 py-3 text-white bg-blue-500 rounded-lg">Add Task</button>
+        </div>
+    </div>
+    <ul>
+        {todos.map((todo, index) => (
+            <li key={index} className="relative flex items-center p-2 mb-4 bg-gray-100 rounded-lg">
+            <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(index)}
+                className="w-5 h-5 mr-2"
+            />
+            <span className={`${todo.completed ? 'line-through' : ''} text-lg`}>{todo.title}</span>
+            <button onClick={() => deleteTask(index)} className="absolute right-0 px-2 py-1 mx-4 text-gray-400 rounded-lg hover:text-gray-900">X</button>
+        </li>
+
+        ))}
+    </ul>
+</div>
+
+
+    );
 }
