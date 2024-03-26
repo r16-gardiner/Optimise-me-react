@@ -6,7 +6,7 @@ export default function DailyTimetable() {
   const [timetableData, setTimetableData] = useState([]);
   const [timetable, setTimetable] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
-
+  const [template, setTemplate] = useState(true)
 
   // Define your types and subjects (if needed)
   const types = ["", "Work", "Exercise","Lottie Time", "Sleep", "Meal", "Commute", "Personal Care", "Lecture", "Cook", "Workshop","Lab","Shop", "Leisure"];
@@ -70,9 +70,13 @@ export default function DailyTimetable() {
       }
     };
     
+    if (template) {
+      fetchData();
+    } else {
+      setTimetableData([]);
+    }
 
-    fetchData();
-  }, [currentDate]);
+  }, [currentDate, template]);
   
   useEffect(() => {
     function generateTimetable() {
@@ -158,7 +162,9 @@ export default function DailyTimetable() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-UK', options);
   };
-  
+
+
+
   return (
     <div className='flex justify-center h-screen'>
       <div key={currentDate} className="container">
@@ -166,13 +172,22 @@ export default function DailyTimetable() {
           <Link to='/plans'>
             <h2 className="pt-5 pb-3 text-3xl text-center">{formatDate(currentDate)}</h2>
             </Link>
-            <div className="flex justify-center pb-5 mb-4 space-x-2">
+            <div className="flex justify-center pb-2 mb-1 space-x-2">
               <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700" onClick={handlePreviousDay}>
                 Previous Day
               </button>
               <button className="px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700" onClick={handleNextDay}>
                 Next Day
               </button>
+            </div>
+            <div className="p-0 mt-0 mb-2 text-center ">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={!template}
+                  onChange={() => setTemplate(!template)}
+                /> Clear Fields
+              </label>
             </div>
           </div>
     
