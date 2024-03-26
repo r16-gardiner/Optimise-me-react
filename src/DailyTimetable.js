@@ -8,14 +8,13 @@ export default function DailyTimetable() {
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
   const [template, setTemplate] = useState(true)
 
-  // Define your types and subjects (if needed)
-  const types = ["", "Work", "Exercise","Lottie Time", "Sleep", "Meal", "Commute", "Personal Care", "Lecture", "Cook", "Workshop","Lab","Shop", "Leisure"];
-  const subjects = ["","Chemistry", "Physics", "Other"]; // Add this if you plan to use subjects
+  const types = ["", "Work","Revision", "Exercise","Lottie Time", "Sleep", "Meal", "Commute", "Personal Care", "Lecture", "Cook", "Workshop","Lab","Shop", "Leisure"];
+  const subjects = ["","Chemistry", "Physics", "Other"];
 
   const getOutlineStyle = (subject) => {
     switch (subject) {
       case "Chemistry":
-        return { outline: '5px solid #4CAF50' }; // Example: Green outline for Chemistry
+        return { outline: '5px solid #dd1533' }; // Example: Green outline for Chemistry
       case "Physics":
         return { outline: '5px solid #2196F3' }; // Example: Blue outline for Physics
       case "Other":
@@ -29,6 +28,8 @@ export default function DailyTimetable() {
     switch (type) {
       case "Work":
         return '#C0D6DF';
+      case "Revision":
+          return '#C0D6DF';
       case "Exercise":
         return '#A3C4BC';
       case "Meal":
@@ -111,7 +112,7 @@ export default function DailyTimetable() {
   const handleTypeChange = (index, newType) => {
     const updatedTimetable = [...timetable];
     updatedTimetable[index].type = newType;
-    if (!['Work', 'Lecture', 'Workshop'].includes(newType)) {
+    if (!['Work', 'Lecture', 'Workshop', 'Revision'].includes(newType)) {
       updatedTimetable[index].subject = '';
     }
     setTimetable(updatedTimetable);
@@ -226,7 +227,7 @@ export default function DailyTimetable() {
                         ))}
                       </select>
                       {/* Conditionally render the subject dropdown */}
-                      {['Work', 'Lecture', 'Workshop'].includes(slot.type) && (
+                      {['Work', 'Lecture', 'Workshop', 'Revision'].includes(slot.type) && (
                         <select
                           value={slot.subject}
                           onChange={(e) => handleSubjectChange(index, e.target.value)}

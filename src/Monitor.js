@@ -3,7 +3,7 @@ import PieChart from './Pie';
 import DailyTimetable from './DailyTimetable';
 import HabitTracker from './HabitsTracker';
 import ToDoList from './ToDo';
-
+import SubjectFractions from './DailySubjectFrac';
 export default function Pidat() {
     const [response, setResponse] = useState(null);
 
@@ -65,6 +65,7 @@ export default function Pidat() {
             <h2 className="mb-4 text-2xl font-semibold">Analytics</h2>
             {response && <PieChart data={response} />}
           </div>
+          <SubjectFractions/>
           <div className="w-full p-2 md:w-1/2 lg:w-2/3">
             {/* Placeholder for further analysis components */}
             <div className="h-full p-4 bg-white rounded-xl">
