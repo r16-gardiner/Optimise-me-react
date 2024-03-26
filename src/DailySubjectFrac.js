@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Pie } from 'react-chartjs-2';
 
-export default function SubjectFractions({ timetable }) {
+export default function SubjectFractions({  }) {
     const [timetableData, setTimetableData] = useState([]);
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
 
@@ -21,13 +22,10 @@ export default function SubjectFractions({ timetable }) {
             }
           } catch (error) {
             console.error('Error fetching data:', error);
-          }
-
-          
+          }          
         };
-        fetchData() 
-    }, [timetableData]);
-        
+        fetchData();
+    }, [currentDate]); // Changed from [timetableData] to [currentDate] to avoid unnecessary refetching
 
     // Initialize counters for each subject type
     var chemistryCount = 0;
@@ -45,28 +43,39 @@ export default function SubjectFractions({ timetable }) {
             break;
         case 'Other':
             otherCount++;
-                break;
+            break;
         default:
-            ;
+            // Do nothing for unknown subjects
+            break;
         }
     });
 
-    // Calculate total count of subjects
-    const totalCount = chemistryCount + physicsCount + otherCount;
-
-    // Calculate fractions
-    const chemistryFraction = totalCount > 0 ? (chemistryCount / totalCount) * 100 : 0;
-    const physicsFraction = totalCount > 0 ? (physicsCount / totalCount) * 100 : 0;
-    const otherFraction = totalCount > 0 ? (otherCount / totalCount) * 100 : 0;
+    // Setup the data for the pie chart
+    const data = {
+        labels: ['Chemistry', 'Physics', 'Other'],
+        datasets: [
+            {
+                label: 'Hours',
+                data: [chemistryCount, physicsCount, otherCount],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
 
     return (
         <div>
-        <h2>Subject Fractions</h2>
-        <p>Chemistry: {chemistryFraction.toFixed(2)}%</p>
-        <p>Physics: {physicsFraction.toFixed(2)}%</p>
-        <p>Other: {otherFraction.toFixed(2)}%</p>
+            <h2 className="pb-6 mb-4 text-2xl font-semibold">Subject Fractions</h2>
+            <Pie data={data} />
         </div>
     );
-    };
-
-
+};
