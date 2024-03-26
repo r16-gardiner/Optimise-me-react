@@ -67,7 +67,7 @@ export default function Pidat() {
             {response && <PieChart data={response} />}
           </div>
           <div className="w-full p-2 md:w-1/2 lg:w-1/3 ">
-          <SubjectFractions/>
+          {/* <SubjectFractions/> */}
           </div>
 
           <div className="w-full p-2 md:w-1/2 lg:w-2/3">
