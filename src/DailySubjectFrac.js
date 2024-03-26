@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+ChartJS.register(ArcElement, Tooltip, Legend);
 export default function SubjectFractions({  }) {
     const [timetableData, setTimetableData] = useState([]);
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);

@@ -4,6 +4,7 @@ import DailyTimetable from './DailyTimetable';
 import HabitTracker from './HabitsTracker';
 import ToDoList from './ToDo';
 import SubjectFractions from './DailySubjectFrac';
+
 export default function Pidat() {
     const [response, setResponse] = useState(null);
 
